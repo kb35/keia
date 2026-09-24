@@ -1,0 +1,58 @@
+# Schema: Applicability Rule
+# Defines the structure of config/routing/applicability.yaml
+#
+# Applicability rules narrow the evidence frontier by declaring
+# which systems are required, optional, or not applicable for
+# a given combination of archetype + object type.
+
+schema: applicability-rule
+version: "1.0"
+
+structure:
+  rules:
+    required: true
+    items:
+      rule:
+        required_fields:
+          - id               # Unique rule identifier (kebab-case)
+          - applies_to       # Conditions for when this rule activates
+          - decision         # The applicability determination
+        optional_fields:
+          - note             # Explanation of why this rule exists
+          - inverse_decision # Alternative decision when conditions are inverted
+          - mode_determination # How to determine which decision applies
+
+  applies_to:
+    fields:
+      domain:
+        required: false
+        type: string
+      object_type:
+        required: false
+        type: string
+      archetypes:
+        required: false
+        type: list
+      topic:
+        required: false
+        type: string
+
+  decision:
+    fields:
+      required_systems:
+        required: true
+        type: list
+        description: "Systems that MUST be checked"
+      optional_systems:
+        required: false
+        type: list
+        description: "Systems that MAY be checked if evidence suggests"
+      not_applicable_systems:
+        required: false
+        type: list
+        description: "Systems explicitly ruled out"
+
+validation:
+  - rule: "id must be unique across all applicability rules"
+  - rule: "All system names must exist in tool-classification.yaml"
+  - rule: "A system cannot appear in both required and not_applicable for the same rule"

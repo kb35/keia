@@ -1,0 +1,37 @@
+# Example Source Registry: Configuration Guides
+# Points to live team documentation without embedding it.
+
+name: "Configuration Guides"
+version: "1.0.0"
+schema: source-entry
+category: config-guide
+
+entries:
+  - id: config-guide-network-switch
+    title: "Configuration Guide - Network Switch Setup"
+    description: >
+      Step-by-step setup for managed network switches, including
+      initial configuration, VLAN assignment, PoE settings, firmware
+      updates, and monitoring integration. Use when commissioning
+      or replacing a switch.
+    category: config-guide
+    domains: [infrastructure]
+    topics: [network-switch, vlan, poe, firmware, commissioning]
+    last_verified: "2026-09-01"
+    access:
+      - tier: A
+        method: api
+        tool: document_read
+        parameters: { id: "doc-12345" }
+      - tier: B
+        method: browser
+        url: "https://your-wiki.example.com/guides/network-switch-setup"
+      - tier: C
+        method: manual
+        instructions: "Open the team wiki and navigate to Guides > Network > Switch Setup"
+
+  # Add more entries following this pattern:
+  #
+  # - id: config-guide-access-point
+  #   title: "Configuration Guide - Wireless Access Point"
+  #   ...

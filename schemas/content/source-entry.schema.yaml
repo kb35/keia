@@ -1,0 +1,71 @@
+# Schema: Source Entry
+# Defines the structure of entries in registry/sources/*.yaml
+#
+# The source registry is the live document catalog.
+# It points to team documentation without embedding it.
+
+schema: source-entry
+version: "1.0"
+
+structure:
+  id:
+    required: true
+    type: string
+    description: "Unique identifier for this document (kebab-case)"
+
+  title:
+    required: true
+    type: string
+    description: "Human-readable document title"
+
+  description:
+    required: true
+    type: string
+    description: "What this document covers and when to use it"
+
+  category:
+    required: true
+    type: string
+    description: "Document category (e.g., config-guide, standard, playbook, template)"
+
+  domains:
+    required: true
+    type: list
+    description: "Which domains this document is relevant to"
+
+  topics:
+    required: true
+    type: list
+    description: "Searchable topic tags"
+
+  last_verified:
+    required: true
+    type: date
+    description: "When someone last confirmed this document is current and accessible"
+
+  access:
+    required: true
+    description: >
+      Tiered access methods, from most automated to least.
+      The agent tries Tier A first, falls back to B, then C.
+    items:
+      access_tier:
+        required_fields:
+          - tier           # A (API), B (browser), or C (manual)
+          - method         # api, browser, or manual
+        optional_fields:
+          - tool           # MCP tool name for tier A
+          - parameters     # Tool parameters for tier A
+          - url            # URL for tier B or C
+          - instructions   # Human-readable instructions for tier C
+
+validation:
+  - rule: "id must be unique across all source registry files"
+  - rule: "domains must reference valid domain names"
+  - rule: "last_verified must not be older than 90 days (warning) or 180 days (error)"
+  - rule: "At least one access tier must be defined"
+
+# --- FRESHNESS THRESHOLDS ---
+freshness:
+  warning: 90   # days since last_verified
+  error: 180    # days since last_verified

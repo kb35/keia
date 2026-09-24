@@ -1,0 +1,89 @@
+# Schema: Session Summary
+# Runtime schema: produced at the end of any substantive session.
+#
+# Aggregates what happened across all tasks in a session.
+# Enables reporting: "This week, 45 tasks across 12 domains,
+# 3 corrections captured, 2 submitted as improvements."
+
+schema: session-summary
+version: "1.0"
+phase: end-of-session
+
+fields:
+  session_id:
+    required: true
+    type: string
+
+  date:
+    required: true
+    type: date
+
+  duration_minutes:
+    required: false
+    type: integer
+
+  user:
+    required: true
+    type: string
+
+  tasks:
+    required: true
+    fields:
+      count:
+        required: true
+        type: integer
+      by_archetype:
+        required: true
+        type: object
+        description: "Count per archetype (e.g., troubleshoot: 3, synthesize: 2)"
+      by_domain:
+        required: true
+        type: object
+        description: "Count per domain (e.g., infrastructure: 4, project-management: 1)"
+      by_evidence_pattern:
+        required: true
+        type: object
+        description: "Count per pattern (e.g., object_verification: 3, context_assembly: 2)"
+
+  systems_used:
+    required: true
+    type: list
+    description: "All systems queried or written to during this session"
+
+  writes:
+    required: true
+    fields:
+      total:
+        required: true
+        type: integer
+      verified:
+        required: true
+        type: integer
+      failed:
+        required: false
+        type: integer
+
+  corrections:
+    required: true
+    fields:
+      detected:
+        required: true
+        type: integer
+      submitted:
+        required: true
+        type: integer
+        description: "Corrections the user approved for shared knowledge"
+      classifications:
+        required: false
+        type: object
+        description: "Count per classification type"
+
+  blocked_systems:
+    required: false
+    type: list
+    description: "Systems that were unavailable (auth, timeout, VPN)"
+
+  safety_triggers:
+    required: false
+    type: list
+    description: "Any safety boundary that fired (loop, scope, budget)"

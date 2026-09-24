@@ -1,0 +1,45 @@
+# Schema: Action Preview
+# Runtime schema: shown to user before any write operation.
+#
+# Every Tier 2 (write) action must produce this preview
+# and wait for user confirmation before executing.
+
+schema: action-preview
+version: "1.0"
+phase: act
+
+fields:
+  what:
+    required: true
+    type: string
+    description: "One sentence describing the action"
+
+  where:
+    required: true
+    type: string
+    description: "Target system and specific record"
+
+  values:
+    required: true
+    type: table
+    description: >
+      Fields to set or change. Each row has:
+      - field: name of the field
+      - value: the value to set
+      - source: where this value came from (platform, user, AI-generated)
+
+  how:
+    required: true
+    type: enum
+    values: [api, browser, manual]
+    description: "Execution method"
+
+  reversible:
+    required: true
+    type: string
+    description: "Whether and how this action can be undone"
+
+  write_count:
+    required: false
+    type: string
+    description: "e.g., 'Inventory write 3 of 20' for rate-limited systems"

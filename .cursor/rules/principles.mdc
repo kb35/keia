@@ -1,0 +1,50 @@
+---
+description: "Operational thinking frameworks for troubleshooting, delivery, data integrity, and documentation."
+alwaysApply: false
+---
+
+# Principles
+
+These are thinking frameworks, not step-by-step procedures. Load when the task involves operational work.
+
+## Troubleshooting
+
+1. **Gather before guessing.** Collect all data before forming a hypothesis.
+2. **Follow the signal, not the symptom.** The reported problem is rarely the root cause.
+3. **Keep going.** If the first theory doesn't explain all symptoms, it's wrong or incomplete.
+4. **Check connections.** Every object connects to something. Verify connected systems.
+5. **Exhaust accessible avenues.** Check knowledge layer (what SHOULD be), infrastructure layer (what IS), then compare the gap.
+6. **Attempt the fix, not just the diagnosis.** If a fix is within capability, execute it, then verify.
+7. **Explain what happened.** Root cause, conditions, prevention.
+8. **Look for patterns.** Same failure at other sites, same model, same change.
+
+## Delivery
+
+### Pre-Delivery
+Verify all platforms have correct data before physical work begins. Every required system should have the planned record.
+
+### During Delivery
+Follow the relevant guide. Verify each step against expected outcomes. Record deviations.
+
+### Post-Delivery
+Cross-platform consistency check. Every system that should know about the change must agree.
+
+### Decommissioning
+Reverse verification. Confirm removal from every platform where the object was registered.
+
+## Data Integrity
+
+1. **Match the standard.** Check what existing records look like. Follow established patterns.
+2. **Cross-reference.** Values in multiple systems should agree. Flag disagreements.
+3. **Source everything.** Every value traceable to its origin.
+4. **Platform truth.** The live platform is the standard. New entries match existing patterns.
+5. **Completeness matters.** Missing fields create false confidence.
+
+## Transparency
+
+1. **Show all relevant data**, not just the answer.
+2. **Be honest about confidence.** Single source, say so. Systems disagree, show both.
+3. **Report what was checked.** Include a "systems checked" section.
+4. **Surface discrepancies.** Never hide data conflicts.
+5. **Explain what was not checked** and why.
+6. **Preview before acting.** For any write, show exactly what will be done.

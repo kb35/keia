@@ -1,0 +1,103 @@
+# Object Profile: Project Record
+# What a healthy, well-maintained project record looks like.
+#
+# Unlike device profiles (physical objects across technical platforms),
+# this profile covers a project as a managed object across project
+# management and communication platforms. This demonstrates that
+# the profile pattern works for ANY managed object, not just hardware.
+
+schema: object-profile
+
+profile:
+  name: Project Record
+  object_role: "A tracked delivery project with scope, timeline, and assignments"
+  naming_prefixes: []
+  version: "1.0"
+  last_updated: "2026-09-24"
+  owner: "{your name}"
+
+sources:
+  - file: references/project-tracker-reference.yaml
+    provides: "Stage definitions, required fields, reporting conventions"
+
+platforms:
+  project_tracker:
+    required_fields:
+      - project_name
+      - stage
+      - assigned_engineer
+      - assigned_pm
+      - target_start_date
+      - target_completion_date
+      - notes
+      - program
+    healthy_indicators:
+      - stage reflects current reality
+      - notes updated within 14 days
+      - all required fields populated
+      - no past-due dates without explanation in notes
+
+  email:
+    required_fields: []
+    healthy_indicators:
+      - recent communication (within 30 days) if project is active
+      - no unanswered vendor queries older than 7 days
+
+  calendar:
+    required_fields: []
+    healthy_indicators:
+      - upcoming milestones have calendar entries
+      - review meetings scheduled at appropriate cadence
+
+  document_storage:
+    required_fields:
+      - scope_document
+    healthy_indicators:
+      - scope document exists and is linked from project tracker
+      - document version matches current project scope
+
+consistency:
+  - check: "stage alignment"
+    compare: [project_tracker.stage, document_storage.scope_document.phase]
+    note: "Project tracker stage should reflect the phase described in the scope document"
+
+  - check: "assignment match"
+    compare: [project_tracker.assigned_engineer, email.recent_communications.participants]
+    note: "The assigned engineer should appear in recent project communications"
+
+  - check: "date alignment"
+    compare: [project_tracker.target_completion_date, calendar.milestone_entries]
+    note: "Key dates in the tracker should have corresponding calendar entries"
+
+discrimination:
+  project_stale:
+    likely_causes:
+      - waiting_on_vendor
+      - blocked_by_dependency
+      - deprioritized
+      - engineer_overloaded
+      - forgotten
+    first_check: project_tracker
+    note: "Check notes for last update. If notes are stale, check email for recent activity."
+
+  project_past_due:
+    likely_causes:
+      - scope_change_not_reflected
+      - vendor_delay
+      - resource_conflict
+      - original_estimate_wrong
+    first_check: project_tracker
+    note: "Check if dates were updated. If not, check email for delay communications."
+
+  assignment_unclear:
+    likely_causes:
+      - new_project_not_fully_set_up
+      - engineer_transition
+      - shared_responsibility
+    first_check: project_tracker
+
+not_applicable:
+  - inventory         # Projects aren't tracked in device inventory
+  - dns               # Projects don't have DNS records
+  - monitoring        # Projects don't have health monitors
+  - fleet_management  # Projects aren't fleet objects

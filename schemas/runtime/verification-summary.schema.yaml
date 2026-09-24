@@ -1,0 +1,55 @@
+# Schema: Verification Summary
+# Runtime schema: appended to outputs that involve writes
+# or multi-source artifact population.
+
+schema: verification-summary
+version: "1.0"
+phase: deliver
+
+fields:
+  fields_verified:
+    required: true
+    type: table
+    description: >
+      Per-field verification. Each row has:
+      - field: what was verified
+      - status: verified, unverified, stale, or conflict
+      - source: where the value came from
+      - freshness: when the source was last checked
+
+  discrepancies:
+    required: true
+    type: string
+    description: "List of data conflicts found, or 'None'"
+
+  stale_data_warnings:
+    required: true
+    type: string
+    description: "List of sources past freshness threshold, or 'None'"
+
+  ai_generated_content:
+    required: true
+    type: string
+    description: "Count and description of AI-generated fields"
+
+  systems_checked:
+    required: true
+    type: list
+    description: "All systems that were queried"
+
+  systems_not_checked:
+    required: false
+    type: list
+    description: "Systems that were not checked, with reason"
+
+  systems_ruled_out:
+    required: false
+    type: list
+    description: "Systems explicitly not applicable, with reason"
+
+# --- STATUS DEFINITIONS ---
+statuses:
+  verified: "Confirmed from a trusted, current source"
+  unverified: "User-provided or AI-generated, not confirmed"
+  stale: "Trusted source but exceeds freshness threshold"
+  conflict: "Multiple sources disagree"

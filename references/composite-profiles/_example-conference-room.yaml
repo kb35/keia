@@ -1,0 +1,74 @@
+# Composite Profile: Conference Room - Medium
+# What a correctly built medium conference room looks like.
+#
+# This profile defines WHAT equipment categories belong in the
+# space and WHERE to find current specs. It does NOT hardcode
+# specific models because standards change over time.
+
+schema: composite-profile
+
+profile:
+  name: Conference Room - Medium
+  space_type: conference-room-medium
+  version: "1.0"
+  last_updated: "2026-09-24"
+  owner: "{your name}"
+  capacity: "6-10 people"
+  purpose: >
+    Medium-sized meeting room with full video conferencing
+    capability, suitable for team meetings with remote participants.
+
+sources:
+  - file: references/object-profiles/_example-profile.yaml
+    provides: "Per-device healthy state verification"
+
+equipment_categories:
+  - category: video_conferencing
+    description: "Codec or video bar for meeting calls"
+    object_profile: references/object-profiles/_example-profile.yaml
+    quantity: "1"
+    notes: "Model and mode determined by current room standard"
+
+  - category: display
+    description: "Screen(s) for content sharing and video"
+    object_profile: null  # Create display-profile.yaml when needed
+    quantity: "1-2"
+    notes: "Dual display for rooms with separate content and video feeds"
+
+  - category: scheduling_panel
+    description: "Room scheduling panel outside the door"
+    object_profile: null
+    quantity: "1"
+    notes: "Shows room availability and current booking"
+
+  - category: network
+    description: "Network switch port(s) for room devices"
+    object_profile: references/object-profiles/_example-profile.yaml
+    quantity: "2-4 ports"
+    notes: "PoE required for codec and scheduling panel"
+
+verification_model:
+  platforms_to_check:
+    - platform: inventory
+      check: "All equipment categories have device records with status: active"
+    - platform: dns
+      check: "All networked devices have forward and reverse DNS"
+    - platform: monitoring
+      check: "Codec and switch reporting healthy"
+    - platform: room_booking
+      check: "Room resource exists with correct capacity and AV equipment listed"
+
+discrimination:
+  room_not_working:
+    description: "User reports the room doesn't work for meetings"
+    classification_steps:
+      - "Check if the codec is online (monitoring) - if down, route to codec troubleshooting"
+      - "Check if the display is showing signal (no remote check possible, ask user)"
+      - "Check if the network port is up (port management) - if down, route to network troubleshooting"
+      - "Check if the room booking system shows the room as available - if not bookable, route to room booking admin"
+  poor_audio:
+    description: "User reports audio issues in the room"
+    classification_steps:
+      - "Check codec firmware version (fleet management) - known audio bugs in certain versions"
+      - "Check if the room has acoustic treatment (documentation) - hard surfaces cause echo"
+      - "Check if the microphone is the correct type for room size"

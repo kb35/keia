@@ -1,0 +1,69 @@
+# Object Profile: Network Switch
+# What a healthy network switch looks like across all platforms.
+
+schema: object-profile
+
+profile:
+  name: Network Switch
+  object_role: "Core or access layer network switch"
+  naming_prefixes: [sw, switch]
+  version: "1.0"
+  last_updated: "2026-09-23"
+  owner: "{your name}"
+
+sources:
+  - file: references/_example-platform-reference.yaml
+    provides: "Naming conventions, expected fields, platform-specific details"
+
+platforms:
+  inventory:
+    required_fields: [hostname, ip_address, serial, asset_tag, site, rack, rack_position, status, device_type]
+    healthy_indicators:
+      - status: active
+      - all required fields populated
+      - interfaces defined with correct types
+      - connections to upstream and downstream devices recorded
+    naming_convention: "{site_code}-{room}-sw{nn}"
+
+  dns:
+    required_fields: [hostname, ip_address, zone]
+    healthy_indicators:
+      - forward record exists and resolves
+      - reverse record exists
+      - IP matches inventory system
+
+  monitoring:
+    required_fields: [monitor_name, tags, metrics]
+    healthy_indicators:
+      - device reporting metrics (SNMP or API)
+      - no active critical alerts
+      - uptime consistent with expected maintenance windows
+
+  port_management:
+    required_fields: [switch_id, port_assignments]
+    healthy_indicators:
+      - port VLANs match site standard
+      - PoE enabled for ports serving APs, cameras, phones
+
+consistency:
+  - check: "hostname match"
+    compare: [inventory.hostname, dns.hostname, monitoring.monitor_name]
+  - check: "IP match"
+    compare: [inventory.ip_address, dns.ip_address]
+  - check: "serial match"
+    compare: [inventory.serial, monitoring.tags.serial]
+
+discrimination:
+  device_unreachable:
+    likely_causes: [power_failure, uplink_down, ip_conflict, hardware_failure]
+    first_check: monitoring
+  port_not_working:
+    likely_causes: [vlan_mismatch, poe_disabled, cable_fault, port_disabled]
+    first_check: port_management
+  high_cpu:
+    likely_causes: [broadcast_storm, spanning_tree_loop, firmware_bug]
+    first_check: monitoring
+
+not_applicable:
+  - fleet_management    # Network switches don't use Poly Lens, Appspace, etc.
+  - content_management  # No signage or media management

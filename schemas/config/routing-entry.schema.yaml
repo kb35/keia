@@ -1,0 +1,58 @@
+# Schema: Routing Entry
+# Defines the structure of config/routing/registry.yaml
+#
+# The routing registry is the thin declarative selector.
+# It maps request classification to an evidence pattern
+# and a starting point for resolution.
+
+schema: routing-entry
+version: "1.0"
+
+structure:
+  prompt_archetypes:
+    required: true
+    description: >
+      Named request types. Each archetype maps to one of the
+      four evidence patterns.
+    items:
+      archetype:
+        required_fields:
+          - name               # Identifier (e.g., troubleshoot, verify, draft_artifact)
+          - evidence_pattern   # One of: object_verification, artifact_population, context_assembly, aggregate_analysis
+          - description        # What this archetype means
+
+  object_types:
+    required: true
+    description: "The things your team manages."
+    items:
+      object_type:
+        required_fields:
+          - name           # Identifier (e.g., device, environment, project)
+          - description    # What this object type represents
+
+  scopes:
+    required: true
+    type: list
+    description: "Size categories: single, group, site, fleet, portfolio"
+
+  routes:
+    required: true
+    description: >
+      The routing matrix. Each route maps a combination of
+      archetype + object_type + scope to a starting point.
+    items:
+      route:
+        required_fields:
+          - match              # Combination: archetype, object_type, scope (can use wildcards)
+          - evidence_pattern   # Inherited from archetype, can be overridden
+          - first_frontier     # List of systems to check first
+          - primary_domain     # Which domain index to load
+        optional_fields:
+          - secondary_domains  # Additional domains that may be relevant
+          - expansion_triggers # Conditions that broaden the frontier (max 6)
+
+validation:
+  - rule: "evidence_pattern must be one of: object_verification, artifact_population, context_assembly, aggregate_analysis"
+  - rule: "first_frontier systems must exist in tool-classification.yaml"
+  - rule: "primary_domain must match a file in references/domains/"
+  - rule: "expansion_triggers must not exceed 6 per route"

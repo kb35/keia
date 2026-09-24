@@ -1,0 +1,52 @@
+# GitLab CI: Schema Validation + Documentation Site
+# Runs validation on every push/MR.
+# Deploys the documentation site to GitLab Pages on main branch.
+
+stages:
+  - validate
+  - build
+  - deploy
+
+# --- VALIDATION ---
+
+schema-validation:
+  stage: validate
+  image: python:3.11-slim
+  script:
+    - echo "Running schema validation..."
+    - python setup/validate.py
+    - echo ""
+    - echo "Running coverage report..."
+    - python setup/validate.py --coverage
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+# --- DOCUMENTATION SITE ---
+
+build-site:
+  stage: build
+  image: python:3.11-slim
+  script:
+    - pip install mkdocs-material
+    - mkdocs build --strict
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+pages:
+  stage: deploy
+  script:
+    - echo "Deploying to GitLab Pages"
+  artifacts:
+    paths:
+      - public
+  needs:
+    - build-site
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  environment:
+    name: production
+    url: https://$CI_PAGES_DOMAIN/$CI_PROJECT_PATH

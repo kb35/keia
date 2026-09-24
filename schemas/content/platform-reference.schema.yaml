@@ -1,0 +1,62 @@
+# Schema: Platform Reference
+# Defines the structure of files at references/*-reference.yaml
+#
+# Platform references are Level 4 of the knowledge hierarchy.
+# They contain specific facts, conventions, and parameters
+# for each connected platform.
+
+schema: platform-reference
+version: "1.0"
+
+structure:
+  name:
+    required: true
+    type: string
+    description: "Platform name"
+
+  version:
+    required: true
+    type: string
+
+  last_updated:
+    required: true
+    type: date
+
+  description:
+    required: true
+    type: string
+    description: "What this platform is and what it's used for"
+
+  access:
+    required: true
+    fields:
+      method:
+        required: true
+        type: enum
+        values: [mcp, browser, api, manual]
+      tool_name:
+        required: false
+        type: string
+        description: "MCP capability tool name, if applicable"
+      url:
+        required: false
+        type: string
+        description: "Platform URL for browser access"
+
+  sections:
+    required: true
+    description: >
+      Organized knowledge about this platform. Each section covers
+      a topic area (e.g., naming conventions, field mappings,
+      troubleshooting trees, workflow steps).
+    items:
+      section_entry:
+        required_fields:
+          - name         # Section title
+          - content      # The actual reference data (structured YAML or prose)
+        optional_fields:
+          - applies_to   # Which object types or domains this section is relevant to
+
+validation:
+  - rule: "At least one section must be defined"
+  - rule: "access.method must be one of: mcp, browser, api, manual"

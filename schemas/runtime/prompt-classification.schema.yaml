@@ -1,0 +1,62 @@
+# Schema: Prompt Classification
+# Runtime schema: output of the Understand phase.
+#
+# This is not a file on disk. It is the contract for what
+# the AI produces when classifying a user's request.
+# Making this explicit means the AI knows exactly what
+# fields to determine, and Phase 2 knows exactly what
+# it receives.
+
+schema: prompt-classification
+version: "1.0"
+phase: understand
+
+fields:
+  archetype:
+    required: true
+    type: string
+    description: "Matched archetype from config/routing/registry.yaml"
+
+  object_type:
+    required: true
+    type: string
+    description: "What the request is about (device, environment, project, etc.)"
+
+  scope:
+    required: true
+    type: enum
+    values: [single, group, site, fleet, portfolio]
+
+  device_class:
+    required: false
+    type: string
+    description: "If object_type is device, the specific class"
+
+  urgency:
+    required: true
+    type: enum
+    values: [high, normal, low]
+
+  role:
+    required: true
+    type: string
+    description: "Detected or configured user role"
+
+  narration_depth:
+    required: true
+    type: enum
+    values: [standard, expert]
+
+  intent:
+    required: true
+    type: enum
+    values: [informational, exploratory, directive]
+    description: >
+      - informational: answer only
+      - exploratory: read only
+      - directive: may proceed to writes
+
+  evidence_pattern:
+    required: true
+    type: enum
+    values: [object_verification, artifact_population, context_assembly, aggregate_analysis]

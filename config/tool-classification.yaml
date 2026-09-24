@@ -1,0 +1,43 @@
+# Tool Classification
+# Every tool action must be classified into a governance tier.
+
+name: "Tool Classification"
+version: "1.0.0"
+schema: tool-classification
+
+tiers:
+  read:
+    description: "Read-only. Execute autonomously."
+    auto_approve: true
+  write:
+    description: "Modifies state. Preview + confirmation required."
+    auto_approve: false
+  prohibited:
+    description: "Never execute. Explain why, offer alternative."
+    auto_approve: false
+  guidance:
+    description: "Returns structured data. No side effects."
+    auto_approve: true
+
+# --- TOOLS ---
+# Add your platform tools here.
+# Example:
+#
+# tools:
+#   inventory_read:
+#     tier: read
+#     description: "Query device inventory"
+#     actions:
+#       get_device: read
+#       search_devices: read
+#
+#   inventory_write:
+#     tier: write
+#     description: "Modify device inventory records"
+#     actions:
+#       create_device: write
+#       update_device: write
+#     prohibited_actions:
+#       delete_device: "Use decommission workflow instead"
+#     rate_limit: 20
+tools: {}

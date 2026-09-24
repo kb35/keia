@@ -1,0 +1,68 @@
+# Schema: Learning Record
+# Runtime schema: captured when the Learn phase detects
+# a correction or divergence.
+
+schema: learning-record
+version: "1.0"
+phase: learn
+
+fields:
+  date:
+    required: true
+    type: date
+
+  signal:
+    required: true
+    type: enum
+    values:
+      - system_addition     # User asked to check a system not in the plan
+      - system_removal      # User said to skip a planned system
+      - value_override      # User provided a different value
+      - sequence_redirect   # User changed the investigation order
+      - approach_override   # User took a fundamentally different approach
+      - scope_expansion     # User broadened the task
+      - scope_reduction     # User narrowed the task
+      - explicit_correction # User said "that's wrong"
+
+  planned:
+    required: true
+    type: string
+    description: "What the agent planned to do (from resolution-plan)"
+
+  actual:
+    required: true
+    type: string
+    description: "What the user did instead"
+
+  rationale:
+    required: false
+    type: string
+    description: "Why the user redirected (if stated; 'not stated' if implicit)"
+
+  classification:
+    required: true
+    type: enum
+    values:
+      - knowledge_gap
+      - routing_gap
+      - applicability_gap
+      - platform_issue
+      - source_gap
+      - one_off
+
+  proposed_fix:
+    required: true
+    fields:
+      file:
+        required: true
+        type: string
+        description: "Which file needs to change (or 'none' for one-off)"
+      change:
+        required: true
+        type: string
+        description: "What specific change to make"
+
+  submitted:
+    required: true
+    type: boolean
+    description: "Whether the user approved submission as an improvement"

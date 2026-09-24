@@ -1,0 +1,28 @@
+# Applicability Rules
+# Decides which systems are required, optional, or not applicable.
+# Prevents both over-checking and under-checking.
+
+name: "Applicability Rules"
+version: "1.0.0"
+schema: applicability-rule
+
+principles:
+  - "Required systems must be checked unless blocked by auth or environment."
+  - "Optional systems may be checked when evidence suggests they matter."
+  - "Not-applicable systems should be ruled out explicitly and explained."
+
+# --- RULES ---
+# Add your domain-specific rules here.
+# Example:
+#
+# rules:
+#   - id: device-identity-check
+#     applies_to:
+#       object_type: device
+#       archetypes: [troubleshoot, verify, commission]
+#     decision:
+#       required_systems: [inventory, dns]
+#       optional_systems: [monitoring]
+#       not_applicable_systems: []
+#     note: "Identity should not rely on a single system."
+rules: []

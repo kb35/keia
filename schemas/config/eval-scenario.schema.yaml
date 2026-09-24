@@ -1,0 +1,117 @@
+# Schema: Eval Scenario
+# Defines the structure of golden-set test files in evals/*.yaml
+#
+# Eval scenarios are known-good request/response pairs that validate
+# the system still works after knowledge changes. They test the
+# routing and resolution path, not the LLM's prose quality.
+#
+# Run evals after every schema change, knowledge update, or rule edit
+# to catch regressions before they reach users.
+
+schema: eval-scenario
+version: "1.0"
+
+structure:
+  scenario:
+    required: true
+    fields:
+      id:
+        required: true
+        type: string
+        description: "Unique scenario identifier (kebab-case)"
+      name:
+        required: true
+        type: string
+        description: "Human-readable scenario name"
+      description:
+        required: true
+        type: string
+        description: "What this scenario tests"
+      category:
+        required: true
+        type: enum
+        values:
+          - routing        # Tests that the right archetype/domain/frontier is selected
+          - resolution     # Tests that the right profiles and systems are loaded
+          - applicability  # Tests that required/optional/N-A systems are correct
+          - verification   # Tests that the write lifecycle works correctly
+          - safety         # Tests that safety boundaries trigger correctly
+
+  input:
+    required: true
+    fields:
+      prompt:
+        required: true
+        type: string
+        description: "The user's request (natural language)"
+      context:
+        required: false
+        type: object
+        description: "Optional context: role, prior conversation, attached data"
+
+  expected:
+    required: true
+    description: "What the system should produce. Not exact text, but structural assertions."
+    fields:
+      classification:
+        required: true
+        description: "Expected prompt-classification fields"
+        fields:
+          archetype:
+            required: true
+            type: string
+          object_type:
+            required: true
+            type: string
+          scope:
+            required: true
+            type: string
+          evidence_pattern:
+            required: true
+            type: string
+
+      resolution:
+        required: false
+        description: "Expected resolution-plan fields"
+        fields:
+          primary_domain:
+            required: false
+            type: string
+          required_systems:
+            required: false
+            type: list
+          profiles_loaded:
+            required: false
+            type: list
+            description: "Paths to profiles that should be loaded (substring match)"
+
+      must_check:
+        required: false
+        type: list
+        description: "Systems that MUST appear in the systems-checked output"
+
+      must_not_check:
+        required: false
+        type: list
+        description: "Systems that must NOT be checked (verifies not-applicable rules)"
+
+      must_contain:
+        required: false
+        type: list
+        description: "Strings that must appear somewhere in the output (key facts, links, values)"
+
+      must_not_contain:
+        required: false
+        type: list
+        description: "Strings that must NOT appear in the output (wrong values, prohibited actions)"
+
+  tags:
+    required: false
+    type: list
+    description: "Labels for filtering: domain name, object type, feature area"
+
+validation:
+  - rule: "archetype must match a value in config/routing/registry.yaml"
+  - rule: "object_type must match a value in config/routing/registry.yaml"
+  - rule: "evidence_pattern must be one of the four patterns"
+  - rule: "id must be unique across all eval files"

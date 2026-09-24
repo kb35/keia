@@ -1,0 +1,25 @@
+# Logs
+logs/
+
+# Editor-specific
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Environment
+.env
+*.env.local
+
+# Node (if validator uses it)
+node_modules/
+
+# Personal workspace files (not part of the framework)
+projects/
+my-preferences.md

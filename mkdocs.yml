@@ -1,0 +1,84 @@
+site_name: Context Engine
+site_description: A schema-driven cognitive architecture for domain-specific AI assistants
+site_url: ""
+
+repo_url: https://gitlab.com/your-group/context-engine
+repo_name: context-engine
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.tabs.link
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/gitlab
+
+docs_dir: site
+site_dir: public
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Concepts:
+    - The 9 Primitives: concepts/primitives.md
+    - The Workflow (URAD-L): concepts/workflow.md
+    - Evidence Patterns: concepts/evidence-patterns.md
+    - Knowledge Hierarchy: concepts/knowledge-hierarchy.md
+    - Governance Model: concepts/governance.md
+  - Guides:
+    - Quickstart (30 minutes): guides/quickstart.md
+    - Migration Guide: guides/migration.md
+    - Scaffolding CLI: guides/scaffolding.md
+  - Schemas:
+    - Overview: schemas/index.md
+    - Content Schemas: schemas/content.md
+    - Config Schemas: schemas/config.md
+    - Runtime Schemas: schemas/runtime.md
+  - Examples:
+    - Infrastructure Domain: examples/infrastructure.md
+    - Project Management Domain: examples/project-management.md
+    - How It All Connects: examples/walkthrough.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/gitlab
+      link: https://gitlab.com/your-group/context-engine

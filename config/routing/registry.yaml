@@ -1,0 +1,79 @@
+# Routing Registry
+# Maps request classification to evidence patterns and starting points.
+# This is intentionally thin: it seeds reasoning, not scripts procedures.
+
+name: "Routing Registry"
+version: "1.0.0"
+schema: routing-entry
+
+prompt_archetypes:
+  troubleshoot:
+    evidence_pattern: object_verification
+    description: "Find the cause of a deviation from expected state"
+  verify:
+    evidence_pattern: object_verification
+    description: "Confirm an object or installation matches its target state"
+  commission:
+    evidence_pattern: object_verification
+    description: "Move an object from planned to verified working state"
+  decommission:
+    evidence_pattern: object_verification
+    description: "Confirm clean removal across all relevant systems"
+  provision:
+    evidence_pattern: object_verification
+    description: "Register or set up an object across all required platforms"
+  draft_artifact:
+    evidence_pattern: artifact_population
+    description: "Gather evidence to populate a structured output"
+  synthesize:
+    evidence_pattern: context_assembly
+    description: "Assemble context across related objects for a human audience"
+  analyze:
+    evidence_pattern: aggregate_analysis
+    description: "Compare patterns across many objects"
+  triage:
+    evidence_pattern: context_assembly
+    description: "Classify and prioritize an incoming request or queue"
+  brief:
+    evidence_pattern: context_assembly
+    description: "Assemble session-level awareness for a briefing"
+  audit:
+    evidence_pattern: aggregate_analysis
+    description: "Check a collection against a standard, report exceptions"
+  evaluate:
+    evidence_pattern: object_verification
+    description: "Compare a proposal or design against standards"
+
+object_types:
+  device:
+    description: "Single physical or logical managed object"
+  environment:
+    description: "A space with multiple components (room, floor, facility)"
+  project:
+    description: "A project and the objects in its scope"
+  incident:
+    description: "An operational ticket, alert, or break-fix case"
+  artifact:
+    description: "A document, ticket, or structured output"
+  fleet:
+    description: "A collection of same-type objects"
+  portfolio:
+    description: "Multiple projects viewed as a set"
+
+scopes: [single, group, site, fleet, portfolio]
+
+# --- ROUTES ---
+# Add your domain-specific routes here.
+# Example:
+#
+# routes:
+#   - match:
+#       archetype: troubleshoot
+#       object_type: device
+#       scope: single
+#     first_frontier: [inventory_system, monitoring_system]
+#     primary_domain: infrastructure
+#     expansion_triggers:
+#       - "identity mismatch -> expand to asset-management"
+#       - "same-site cluster -> expand to infrastructure"
+routes: []

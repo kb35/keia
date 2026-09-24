@@ -1,0 +1,46 @@
+# Schema: Tool Classification
+# Defines the structure of config/tool-classification.yaml
+#
+# Every tool action must be classified into a governance tier.
+# This is the single source of truth for what the agent is
+# allowed to do autonomously vs. what requires approval.
+
+schema: tool-classification
+version: "1.0"
+
+structure:
+  tiers:
+    required: true
+    description: "Tier definitions (read, write, prohibited, guidance)"
+    fixed_values:
+      read:
+        description: "Read-only. Execute autonomously."
+        auto_approve: true
+      write:
+        description: "Modifies state. Requires preview + confirmation."
+        auto_approve: false
+      prohibited:
+        description: "Never execute. Explain why, offer alternative."
+        auto_approve: false
+      guidance:
+        description: "Returns structured data. No side effects."
+        auto_approve: true
+
+  tools:
+    required: true
+    description: "Per-tool classification"
+    items:
+      tool_entry:
+        required_fields:
+          - tool_name      # MCP capability tool name
+          - tier           # Overall tier for auto-approve decisions
+          - description    # What this tool does
+        optional_fields:
+          - actions        # Per-action tier overrides
+          - prohibited_actions  # Actions that must never be called, with alternatives
+          - rate_limit     # Maximum calls per session
+
+validation:
+  - rule: "tier must be one of: read, write, prohibited, guidance"
+  - rule: "Every tool referenced in applicability rules must be classified here"
+  - rule: "Prohibited tools must have an alternative listed"

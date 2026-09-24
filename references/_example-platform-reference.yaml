@@ -1,0 +1,58 @@
+# Example Platform Reference
+# Specific facts, conventions, and parameters for a connected platform.
+
+schema: platform-reference
+
+name: "Inventory System"
+version: "1.0"
+last_updated: "2026-09-23"
+
+description: >
+  The team's device inventory and DCIM system. Tracks all managed
+  devices, their locations, connections, and lifecycle status.
+
+access:
+  method: mcp
+  tool_name: inventory_read
+  url: "https://inventory.example.com"
+
+sections:
+  - name: "Naming Conventions"
+    applies_to: [device]
+    content:
+      pattern: "{site_code}-{room_code}-{role_prefix}{nn}"
+      examples:
+        - "dub-1w272-sw01"     # Dublin, room 1W272, switch 01
+        - "muc-4w128-ap03"     # Munich, room 4W128, access point 03
+      rules:
+        - "Site code is the 3-letter IATA airport code"
+        - "Room code uses floor + wing + room number"
+        - "Role prefix from the standard list (sw, ap, pdu, ups, vtc, etc.)"
+        - "Sequential number, zero-padded to 2 digits"
+
+  - name: "Device Lifecycle States"
+    applies_to: [device]
+    content:
+      states:
+        planned: "Device ordered or approved, not yet on-site"
+        staged: "Device on-site, not yet configured"
+        active: "Device configured and in production"
+        decommissioning: "Device being removed, records pending cleanup"
+        offline: "Device removed from production, records retained"
+
+  - name: "Required Fields"
+    applies_to: [device]
+    content:
+      always_required:
+        - hostname
+        - ip_address (primary)
+        - serial_number
+        - asset_tag
+        - site
+        - rack
+        - rack_position
+        - status
+        - device_type
+      conditional:
+        - mac_address: "Required for DHCP-assigned devices"
+        - firmware_version: "Required for network and AV devices"

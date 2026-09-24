@@ -1,0 +1,118 @@
+# Configuration Profile: Video Codec (Example)
+# What a correctly configured video codec should look like internally.
+#
+# This complements the object profile (which defines where the device
+# should be registered). This profile defines the actual device settings.
+
+schema: configuration-profile
+
+profile:
+  name: "Video Codec - Poly Studio X Series"
+  device_class: av_codec
+  applies_to_models:
+    - "Poly Studio X72"
+    - "Poly Studio X50"
+    - "Poly Studio X30"
+  version: "1.0"
+  last_updated: "2026-09-24"
+  owner: "{your name}"
+
+deployment_modes:
+  - name: gmna
+    description: "Google Meet Native Application mode. Device acts as a native Google Meet endpoint."
+    detection: "Check Poly Lens provisioning mode or WebUI system info"
+    conditions: "Default for X72, X50, X30 new deployments (2024+)"
+
+  - name: sip_interop
+    description: "SIP interop mode via Pexip. Device registers to a SIP registrar."
+    detection: "Check Poly Lens provisioning mode or WebUI SIP settings"
+    conditions: "Legacy deployments, G62 models (no GMNA support)"
+
+settings:
+  - category: firmware
+    settings:
+      - name: "Software version"
+        expected_value: "4.3.2"
+        verification: api_field
+        rationale: "Current stable release. Resolves audio dropout issue in 4.3.0."
+        source: "config-guide-poly-studio-x-gmna"
+
+  - category: network
+    settings:
+      - name: "802.1x authentication"
+        expected_value: "Enabled"
+        verification: webui_path
+        rationale: "Required for network access on all managed ports"
+      - name: "CDP/LLDP"
+        expected_value: "Enabled"
+        verification: webui_path
+        rationale: "Required for switch port identification and PoE negotiation"
+      - name: "Provisioning server"
+        expected_value: "Poly Lens"
+        verification: api_field
+        rationale: "Centralized management and firmware policy"
+
+  - category: audio_video
+    settings:
+      - name: "Default resolution"
+        expected_value: "1080p"
+        verification: webui_path
+      - name: "Auto-answer"
+        expected_value: "Disabled"
+        verification: api_field
+        rationale: "Security: prevents unintended connections"
+      - name: "Proximity pairing"
+        expected_value: "Enabled"
+        verification: webui_path
+        rationale: "Allows wireless content sharing from laptops"
+
+  - category: provisioning
+    settings:
+      - name: "Provisioning mode"
+        expected_value: "Poly Lens cloud"
+        verification: api_field
+        mode_dependent: true
+        mode_values:
+          gmna: "Poly Lens cloud"
+          sip_interop: "Poly Lens cloud"
+        rationale: "Both modes use Poly Lens for management; call mode is separate"
+
+      - name: "Call mode"
+        expected_value: "GMNA"
+        verification: api_field
+        mode_dependent: true
+        mode_values:
+          gmna: "Google Meet Native Application"
+          sip_interop: "SIP"
+        rationale: "Determines how the device joins meetings"
+
+      - name: "SIP registrar"
+        expected_value: null
+        verification: webui_path
+        mode_dependent: true
+        mode_values:
+          gmna: "Not configured (GMNA handles call setup)"
+          sip_interop: "amg-edge2.mid.vp.vc"
+        rationale: "SIP registrar only needed in SIP interop mode"
+
+  - category: security
+    settings:
+      - name: "Admin password"
+        expected_value: "Set (non-default)"
+        verification: not_remotely_verifiable
+        rationale: "Default password must be changed at commissioning"
+      - name: "Web interface access"
+        expected_value: "HTTPS only"
+        verification: webui_path
+
+firmware:
+  current_target: "4.3.2"
+  policy: "Poly Lens auto-update policy (site-level). Staged rollout: pilot sites first, then global."
+  exceptions:
+    - device: "dub-1w272-vtc-codec01"
+      reason: "Testing firmware 4.4.0-beta. Do not auto-update."
+      until: "2026-11-01"
+
+config_guide_reference: "config-guide-poly-studio-x-gmna"
+
+relationship_to_object_profile: "references/object-profiles/_example-profile.yaml"

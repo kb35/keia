@@ -1,0 +1,117 @@
+# Schema: Configuration Profile
+# Defines the structure of files at references/configuration-profiles/*.yaml
+#
+# Configuration profiles define what a device's INTERNAL SETTINGS
+# should be for a given deployment type. This is different from
+# object profiles (which define where a device should exist across
+# platforms and what "registered correctly" looks like).
+#
+# Object profile: "This codec must be in Netbox, Infoblox, Poly Lens"
+# Configuration profile: "This codec should have firmware 4.3.2,
+#   GMNA mode, 1080p, auto-answer off, specific SIP settings"
+#
+# Configuration profiles formalize what currently lives in
+# Source Registry config guides as prose into checkable structures.
+
+schema: configuration-profile
+version: "1.0"
+
+structure:
+  profile:
+    required: true
+    fields:
+      name:
+        required: true
+        type: string
+        description: "Device model or model family"
+      device_class:
+        required: true
+        type: string
+        description: "Must match a device_class from routing registry"
+      applies_to_models:
+        required: true
+        type: list
+        description: "Specific model numbers this profile covers"
+      version:
+        required: true
+        type: string
+      last_updated:
+        required: true
+        type: date
+      owner:
+        required: true
+        type: string
+
+  deployment_modes:
+    required: false
+    description: >
+      If the device operates in different modes (e.g., SIP vs GMNA
+      for codecs), define each mode here. Each mode has its own
+      set of expected settings.
+    items:
+      mode:
+        required_fields:
+          - name           # e.g., "gmna", "sip_interop"
+          - description    # When this mode is used
+          - detection      # How to determine which mode is active
+        optional_fields:
+          - conditions     # When to use this mode (e.g., "G62 models use SIP")
+
+  settings:
+    required: true
+    description: >
+      The expected configuration values. Organized by category.
+      Each setting has an expected value, a verification method,
+      and optionally a mode dependency.
+    items:
+      setting_category:
+        required_fields:
+          - category       # e.g., "firmware", "network", "audio_video", "security", "provisioning"
+          - settings       # List of individual settings
+        items:
+          setting:
+            required_fields:
+              - name           # Setting name as it appears in the device UI or API
+              - expected_value # What it should be set to
+              - verification   # How to check: api_field, webui_path, cli_command, or not_remotely_verifiable
+            optional_fields:
+              - mode_dependent # If true, expected_value varies by deployment_mode
+              - mode_values    # Per-mode expected values (only when mode_dependent is true)
+              - rationale      # Why this value (helps new engineers understand)
+              - source         # Where this standard comes from (config guide ID, team decision, vendor recommendation)
+
+  firmware:
+    required: true
+    description: "Expected firmware version and update policy"
+    fields:
+      current_target:
+        required: true
+        type: string
+        description: "The firmware version devices should be running"
+      policy:
+        required: true
+        type: string
+        description: "How firmware is managed (e.g., 'Poly Lens auto-update policy', 'manual via WebUI')"
+      exceptions:
+        required: false
+        type: list
+        description: "Devices or sites that should NOT be on the target firmware, with reason"
+
+  config_guide_reference:
+    required: true
+    type: string
+    description: "Source Registry ID for the full configuration guide"
+
+  relationship_to_object_profile:
+    required: true
+    type: string
+    description: >
+      Path to the object profile for this device class.
+      The object profile defines WHERE the device should be registered.
+      The configuration profile defines HOW it should be configured.
+
+validation:
+  - rule: "device_class must match a device_class in config/routing/registry.yaml"
+  - rule: "config_guide_reference must match an ID in registry/sources/"
+  - rule: "relationship_to_object_profile must point to an existing file"
+  - rule: "If deployment_modes is defined, mode_dependent settings must have mode_values"

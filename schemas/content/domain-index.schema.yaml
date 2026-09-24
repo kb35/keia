@@ -1,0 +1,74 @@
+# Schema: Domain Index
+# Defines the structure of files at references/domains/*.md
+#
+# Domain indexes are Level 1 of the knowledge hierarchy.
+# They are the entry point for each area of responsibility.
+# Every domain index MUST follow this structure.
+
+schema: domain-index
+version: "1.0"
+
+structure:
+  # --- REQUIRED SECTIONS ---
+
+  header:
+    required: true
+    description: "Markdown H1 title matching the domain name"
+
+  metadata:
+    required: true
+    fields:
+      owner:
+        required: true
+        type: string
+        description: "Person or team responsible for this domain"
+      backup:
+        required: false
+        type: string
+
+  scope:
+    required: true
+    description: >
+      What falls in this domain and what doesn't.
+      One paragraph defining the boundary.
+
+  topics:
+    required: true
+    description: >
+      List of topics within this domain. Each topic is a subsection.
+    items:
+      topic_entry:
+        required_fields:
+          - name               # H3 heading
+          - description        # What this topic covers
+          - topic_index        # Path to references/topics/{domain}/{topic}.md (must exist)
+          - profiles           # Paths to relevant object-profiles/ or composite-profiles/ files
+          - references         # Paths to *-reference.yaml files
+          - tools              # Which MCP servers or platforms apply
+          - source_registry    # Which registry/sources/ entries point here
+        optional_fields:
+          - why_notes          # Explanatory context for non-obvious conventions
+
+  cross_domain:
+    required: true
+    description: >
+      How this domain connects to others. When does work in this domain
+      require checking another domain? List as bullet points:
+      "When X happens -> check {other domain}"
+
+  # --- OPTIONAL SECTIONS ---
+
+  knowledge_layer_checklist:
+    required: false
+    description: >
+      Standards, configuration guides, and references that apply
+      to work in this domain. Helps the Resolve phase know what
+      to read before acting.
+
+# --- VALIDATION RULES ---
+
+validation:
+  - rule: "Every topic_index path must resolve to an existing file"
+  - rule: "Every profiles path must resolve to an existing file"
+  - rule: "Every references path must resolve to an existing file"
+  - rule: "cross_domain must reference valid domain names from references/domains/"

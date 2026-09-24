@@ -1,0 +1,63 @@
+# Schema: Resolution Plan
+# Runtime schema: output of the Resolve phase.
+#
+# This is the plan the agent forms before acting.
+# The Learn phase compares this plan against what actually
+# happened to detect divergences.
+
+schema: resolution-plan
+version: "1.0"
+phase: resolve
+
+fields:
+  classification:
+    required: true
+    type: object
+    description: "The prompt-classification from the Understand phase"
+
+  route:
+    required: true
+    fields:
+      primary_domain:
+        required: true
+        type: string
+      secondary_domains:
+        required: false
+        type: list
+      first_frontier:
+        required: true
+        type: list
+        description: "Systems to check first"
+
+  applicability:
+    required: true
+    fields:
+      required_systems:
+        required: true
+        type: list
+      optional_systems:
+        required: false
+        type: list
+      not_applicable:
+        required: false
+        type: list
+        description: "Systems ruled out, with reason"
+
+  profiles_loaded:
+    required: false
+    type: list
+    description: "Paths to profiles loaded for this task"
+
+  principles_selected:
+    required: false
+    type: list
+    description: "Which operational principles apply"
+
+  capability_level:
+    required: true
+    type: enum
+    values: [domain_match, best_effort, limitation]
+    description: >
+      - domain_match: full capability, proceed confidently
+      - best_effort: can help, user should verify
+      - limitation: cannot do X, offer alternative

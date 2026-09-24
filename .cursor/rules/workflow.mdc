@@ -1,0 +1,73 @@
+---
+description: "The 5-phase workflow that processes every request."
+alwaysApply: true
+---
+
+# Workflow
+
+Every request flows through five phases: Understand, Resolve, Act, Deliver, Learn.
+
+## Phase 1: Understand
+
+Classify the request before doing anything.
+
+1. **Archetype**: What kind of work? Match to `config/routing/registry.yaml` archetypes.
+2. **Object type**: What is it about? (device, environment, project, incident, artifact, fleet)
+3. **Scope**: How big? (single, group, site, fleet, portfolio)
+4. **Urgency**: Imminent deadline = high. Planning = low.
+5. **Role**: Who is asking? Load role overlay from `config/roles/`.
+6. **Intent**: Informational (answer only), exploratory (read only), or directive (proceed to write governance).
+
+## Phase 2: Resolve
+
+Assemble knowledge, tools, and principles for this specific task.
+
+1. **Readiness gate**: Check auth/availability for required services before deeper work.
+2. **Route**: Look up archetype + object type + scope in `config/routing/registry.yaml`. Get the evidence pattern and first frontier.
+3. **Applicability**: Read `config/routing/applicability.yaml`. Determine required/optional/not-applicable systems.
+4. **Domain**: Read `references/domains/{domain}.md`. Follow links to topics, profiles, references.
+5. **Profile**: Load the target-state profile for the object in scope. This defines what "correct" looks like.
+6. **Principles**: Load `principles.mdc` if the task involves operational work.
+7. **Evidence frontier**: Gather evidence from required systems. If new systems become relevant, re-enter Resolve.
+8. **Stop**: When required evidence is satisfied, explicitly ruled out, or blocked.
+
+### The 4 Evidence Patterns
+
+| Pattern | When | Process |
+|---------|------|---------|
+| Object Verification | troubleshoot, verify, commission, provision | Load profile (SHOULD), query platforms (IS), compare gap |
+| Artifact Population | create ticket, draft email, generate checklist | Load template, identify sources per field, populate |
+| Context Assembly | meeting prep, status update, briefing | Identify evidence expectations, query in priority order, synthesize |
+| Aggregate Analysis | fleet health, portfolio review, audit | Define population + standard, query at scale, report exceptions |
+
+## Phase 3: Act
+
+Execute using platform connections. Governed by `governance.mdc`.
+
+- Route to best available tier: API (MCP) > Browser > Manual.
+- Reads: autonomous. Writes follow the full cycle: Preview > Confirmation > Execute > Verify.
+- After every write: read-back verification (see Write Verification in `governance.mdc`).
+- Monitor safety boundaries: loop detection, scope boundary, resource budget.
+- If a multi-step write fails partway through: stop, report, assess, offer options.
+
+## Phase 4: Deliver
+
+Present results for the user's role. Governed by `output.mdc`.
+
+- Lead with the answer, not the process.
+- Source attribution for multi-source outputs.
+- Clickable links for every resource.
+- The final answer must be self-contained (editor may collapse tool call output).
+
+## Phase 5: Learn
+
+Detect corrections and divergences. Governed by `learning.mdc`.
+
+- Compare the resolution plan (what was planned) against what actually happened.
+- Classify: knowledge gap, routing gap, applicability gap, or one-off.
+- Draft the specific fix (file + change).
+- Route: shared knowledge via merge request, personal preferences to local file.
+
+## Completeness Check
+
+Before delivering, re-read the original message. Verify every item is addressed. State what is missing and why. Never present partial results as complete.

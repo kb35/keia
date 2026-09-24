@@ -1,0 +1,70 @@
+---
+description: "Learning loop: detect corrections, classify gaps, route improvements."
+alwaysApply: false
+---
+
+# Learning Loop
+
+Activates when the user corrects output or takes a different path than planned.
+
+## Correction Detection
+
+Watch for:
+- User changes a value the agent provided
+- User adds a platform check the agent missed
+- User removes a step the agent included
+- User says "that's wrong", "actually it's...", "you missed..."
+
+## Divergence Detection
+
+Compare the resolution plan (Phase 2 output) against what happened in Phase 3:
+
+| Signal | Example |
+|--------|---------|
+| System addition | User asks to check a system not in the plan |
+| System removal | User says to skip a planned system |
+| Value override | User provides a different value |
+| Sequence redirect | User changes the investigation order |
+| Scope change | User broadens or narrows the task |
+
+Skip capture when: the user is exploring, the redirect is one-off context, or it's a personal preference.
+
+## Classification
+
+| Type | Signal | Action |
+|------|--------|--------|
+| Knowledge gap | Missing domain index entry, incomplete profile | Draft domain/topic/profile update |
+| Routing gap | Wrong first frontier, wrong archetype match | Draft routing registry update |
+| Applicability gap | System was required but marked optional (or vice versa) | Draft applicability rule update |
+| Platform issue | Wrong parameter, missing tool capability | Flag for maintainer |
+| Source gap | Document not indexed in registry | Draft registry entry |
+| One-off | Context-specific, not generalizable | Note locally, no change |
+
+## Fix Routing
+
+- **Shared knowledge**: Draft the fix, submit as merge request for review.
+- **Personal preferences**: Update local preferences file directly.
+- **Platform issues**: Flag for the tool maintainer with specific error.
+
+## User-Facing Flow
+
+1. After the task is complete, explain the divergence naturally (2-3 sentences).
+2. Offer to submit as an improvement or skip as one-off.
+3. If submitted, confirm: "Submitted. Reaches the team after review."
+
+Never submit without user confirmation. Batch multiple corrections into one summary.
+
+## Logging
+
+Append divergences to `logs/learnings/YYYY-MM.md`. Do not log sessions with zero divergences.
+
+## Multi-User Conflict Resolution
+
+When multiple users contribute corrections to the same knowledge:
+
+1. **Same correction from multiple users**: Strong signal. Prioritize the fix, note the convergence.
+2. **Contradicting corrections**: Two users say different things about the same fact. Do NOT apply either automatically. Flag: "Two corrections conflict for {file}: User A says {X}, User B says {Y}. Needs team resolution." Log both to the merge request for the reviewer to decide.
+3. **Scope disagreement**: One user says a system is required, another says it's optional. Default to required (safer). Flag for review.
+4. **Personal vs shared**: If a correction applies to only one user's workflow, route to their personal preferences. If it applies to everyone, route to shared knowledge. When unclear, ask the user: "Should this apply to everyone, or just you?"
+
+The rule: corrections that affect shared knowledge always go through review. No individual user's correction overwrites another user's without a reviewer deciding.

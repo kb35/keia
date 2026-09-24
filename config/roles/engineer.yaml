@@ -1,0 +1,31 @@
+# Role: Engineer
+# Example role definition. Copy and modify for your team's roles.
+
+schema: role-definition
+
+role:
+  name: "Engineer"
+  slug: "engineer"
+
+description: >
+  Technical practitioners who build, troubleshoot, verify, and maintain
+  the systems in scope. Needs detailed technical output, checklists,
+  and cross-platform verification.
+
+narration_depth: standard
+
+delivery_preferences:
+  language: "technical"
+  default_format: "checklists and data tables"
+
+write_access:
+  # List the tool names from tool-classification.yaml that this role can use for writes
+  # Example:
+  # - inventory_write
+  # - dns_write
+  # - email_draft
+  []
+
+workflow_overlay: null
+  # Optional: path to a role-specific .mdc file
+  # Example: ".cursor/rules/roles/engineer.mdc"

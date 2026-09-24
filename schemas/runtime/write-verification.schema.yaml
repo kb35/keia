@@ -1,0 +1,70 @@
+# Schema: Write Verification
+# Runtime schema: produced after every write operation.
+#
+# Every Tier 2 (write) action must be followed by a read-back
+# verification. This schema defines the structure of that
+# verification. It catches silent failures: cases where the
+# agent reports success but the write didn't actually land.
+
+schema: write-verification
+version: "1.0"
+phase: act
+
+fields:
+  action:
+    required: true
+    type: string
+    description: "What was written (from the action-preview)"
+
+  target:
+    required: true
+    type: string
+    description: "System and record (from the action-preview)"
+
+  verification_method:
+    required: true
+    type: enum
+    values:
+      - read_back          # Queried the same system to confirm
+      - effect_check       # Checked a downstream effect (e.g., DNS resolving after record creation)
+      - not_verifiable     # Platform has no read-back capability
+    description: "How the write was verified"
+
+  outcome:
+    required: true
+    type: enum
+    values:
+      - verified           # All fields match expected values
+      - partial            # Some fields match, some differ
+      - failed             # Record not found or completely wrong
+      - not_verified       # Could not verify (platform limitation)
+
+  fields_checked:
+    required: true
+    type: table
+    description: >
+      Per-field comparison between what was written and what was read back.
+      Each row has:
+      - field: name of the field
+      - expected: value from the action-preview
+      - actual: value from the read-back (or "not found")
+      - match: true/false
+
+  error:
+    required: false
+    type: string
+    description: "Error message if the write or verification failed"
+
+  partial_state_assessment:
+    required: false
+    type: string
+    description: >
+      Only populated when outcome is "partial" or "failed" in a
+      multi-step write. Assesses whether the partial state is
+      harmful (inconsistent) or benign (incomplete but not wrong).
+
+# --- RULES ---
+# - outcome: verified -> proceed to next step or deliver
+# - outcome: partial -> stop, report which fields failed, do not proceed
+# - outcome: failed -> stop, report error, offer rollback if reversible
+# - outcome: not_verified -> state the limitation, proceed with warning

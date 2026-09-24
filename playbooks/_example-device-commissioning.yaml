@@ -1,0 +1,70 @@
+# Playbook: Device Commissioning
+# A multi-phase process guide for bringing a new device into production.
+#
+# Playbooks are OPTIONAL process context. The framework reasons from
+# primitives (profiles, routing, evidence patterns) without playbooks.
+# Use playbooks when ordered execution across phases matters.
+
+name: Device Commissioning
+version: "1.0"
+description: >
+  End-to-end process for commissioning a new device: from planned state
+  through configuration to verified active operation.
+
+applies_to:
+  archetypes: [commission, provision]
+  object_types: [device]
+
+phases:
+  - phase: 1
+    name: Pre-Installation
+    description: "Verify all platform records are prepared before physical work begins"
+    steps:
+      - "Verify device record exists in inventory with status: planned or staged"
+      - "Verify hostname follows naming convention (check against platform reference)"
+      - "Verify DNS record created with correct IP and zone"
+      - "Verify network port allocated and configured (VLAN, PoE if needed)"
+      - "Verify monitoring expectations defined (what monitors will be created post-install)"
+    evidence_pattern: object_verification
+    profile_check: "Compare planned record against object profile required_fields"
+    gate: "All required platform records exist. DNS resolves. Port is configured."
+
+  - phase: 2
+    name: Installation
+    description: "Physical installation and initial configuration"
+    steps:
+      - "Follow the configuration guide from the source registry"
+      - "Verify each configuration step against expected outcomes"
+      - "Record any deviations from the guide"
+      - "Confirm device is reachable on the network"
+    evidence_pattern: object_verification
+    profile_check: "Device reachable, basic identity confirmed"
+    gate: "Device is on the network and responds to management queries."
+
+  - phase: 3
+    name: Post-Installation Verification
+    description: "Cross-platform consistency check"
+    steps:
+      - "Update inventory record to status: active"
+      - "Verify DNS resolution matches inventory IP"
+      - "Verify monitoring is receiving data"
+      - "Register in fleet management tool (if applicable)"
+      - "Verify all consistency checks from the object profile pass"
+      - "Run read-after-write verification for any records updated"
+    evidence_pattern: object_verification
+    profile_check: "Full object profile comparison: all platforms, all consistency checks"
+    gate: "All systems agree. Profile comparison shows no gaps."
+
+  - phase: 4
+    name: Documentation
+    description: "Record what was done"
+    steps:
+      - "Update project file with commissioning notes"
+      - "Close or update any related tickets"
+      - "Take and organize verification photos (if applicable)"
+    evidence_pattern: artifact_population
+    gate: "Documentation complete. All related records updated."
+
+roles:
+  engineer: "Executes all phases"
+  pm: "Monitors phase gates and timeline"

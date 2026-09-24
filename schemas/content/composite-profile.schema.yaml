@@ -1,0 +1,77 @@
+# Schema: Composite Profile
+# Defines the structure of files at references/composite-profiles/*.yaml
+#
+# Composite profiles are Level 3b of the knowledge hierarchy.
+# They define what a correctly built environment (room, space,
+# facility) looks like. Unlike object profiles (single object),
+# composite profiles define WHAT equipment categories belong
+# in a space and HOW to verify completeness.
+
+schema: composite-profile
+version: "1.0"
+
+structure:
+  profile:
+    required: true
+    fields:
+      name:
+        required: true
+        type: string
+      space_type:
+        required: true
+        type: string
+        description: "Machine-readable type identifier"
+      version:
+        required: true
+        type: string
+      last_updated:
+        required: true
+        type: date
+      owner:
+        required: true
+        type: string
+      capacity:
+        required: false
+        type: string
+      purpose:
+        required: true
+        type: string
+        description: "What this space is for"
+
+  sources:
+    required: true
+    description: "Knowledge files this profile draws from"
+
+  equipment_categories:
+    required: true
+    description: >
+      Categories of equipment that belong in this space.
+      Does NOT hardcode specific models (those change over time).
+      Instead, defines categories and points to live sources
+      queried at runtime for current specifications.
+    items:
+      category_entry:
+        required_fields:
+          - category        # e.g., "video_conferencing", "display", "network"
+          - description     # What this equipment does in the space
+          - object_profile  # Path to the object profile for this category
+          - quantity         # Expected count or "varies"
+        optional_fields:
+          - live_source     # URL or registry entry for current model spec
+
+  verification_model:
+    required: true
+    description: >
+      How to verify the space is correctly built.
+      Lists the platforms to check and what to look for.
+
+  discrimination:
+    required: false
+    description: >
+      Room-level troubleshooting logic. When a user reports
+      a space-level problem (e.g., "the meeting room doesn't work"),
+      this guides classification to the right equipment category.
+
+validation:
+  - rule: "At least one equipment category must be defined"
+  - rule: "Each object_profile path must resolve to an existing file"

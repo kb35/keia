@@ -1,0 +1,126 @@
+# Schema: Decision Trace
+# Runtime schema: produced during every meaningful task.
+#
+# Records WHY each decision was made during the workflow.
+# Enables post-hoc analysis: which domains get traffic,
+# which systems are checked most, where corrections cluster.
+#
+# This trace is embedded in narration and the systems-checked
+# summary. It does not require a separate logging step.
+
+schema: decision-trace
+version: "1.0"
+phase: all
+
+fields:
+  task_id:
+    required: true
+    type: string
+    description: "Unique identifier for this task (generated per request)"
+
+  timestamp:
+    required: true
+    type: datetime
+
+  classification:
+    required: true
+    type: object
+    description: "The prompt-classification from Understand"
+
+  routing_decision:
+    required: true
+    fields:
+      archetype_matched:
+        required: true
+        type: string
+      route_used:
+        required: true
+        type: string
+        description: "Which route entry matched"
+      primary_domain:
+        required: true
+        type: string
+      evidence_pattern:
+        required: true
+        type: string
+
+  systems:
+    required: true
+    fields:
+      required:
+        required: true
+        type: list
+        description: "Systems predicted as required by routing + applicability"
+      checked:
+        required: true
+        type: list
+        description: "Systems actually queried during this task"
+      not_applicable:
+        required: false
+        type: list
+        description: "Systems ruled out, with reason"
+      blocked:
+        required: false
+        type: list
+        description: "Systems that could not be checked (auth, timeout, VPN)"
+
+  frontier_expansions:
+    required: false
+    type: list
+    description: >
+      Each expansion records: what triggered it, what system/domain
+      was added, and why. Empty if no expansion occurred.
+    items:
+      expansion:
+        fields:
+          trigger: { required: true, type: string }
+          added: { required: true, type: string }
+          reason: { required: true, type: string }
+
+  profiles_loaded:
+    required: false
+    type: list
+
+  tool_calls:
+    required: false
+    type: list
+    description: >
+      Summary of tool calls made. Each entry has:
+      - tool: capability tool name
+      - action: specific action
+      - tier: read/write/guidance
+      - status: success/failure/timeout
+      - latency_ms: response time
+    items:
+      tool_call:
+        fields:
+          tool: { required: true, type: string }
+          action: { required: true, type: string }
+          tier: { required: true, type: string }
+          status: { required: true, type: enum, values: [success, failure, timeout] }
+          latency_ms: { required: false, type: integer }
+
+  writes:
+    required: false
+    type: list
+    description: "Write operations performed, with verification outcome"
+    items:
+      write:
+        fields:
+          tool: { required: true, type: string }
+          target: { required: true, type: string }
+          verification: { required: true, type: enum, values: [verified, partial, failed, not_verified] }
+
+  divergences:
+    required: false
+    type: list
+    description: "Divergences detected by the Learn phase (if any)"
+
+  outcome:
+    required: true
+    type: enum
+    values:
+      - completed          # Task finished successfully
+      - partial            # Some items completed, some blocked
+      - blocked            # Could not proceed (auth, environment)
+      - redirected         # User changed direction during task

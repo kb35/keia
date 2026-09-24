@@ -1,0 +1,58 @@
+# Schema: Topic Index
+# Defines the structure of files at references/topics/{domain}/*.md
+#
+# Topic indexes are Level 2 of the knowledge hierarchy.
+# They are narrower slices within a domain, focused on a specific
+# family of tasks or objects.
+
+schema: topic-index
+version: "1.0"
+
+structure:
+  header:
+    required: true
+    description: "Markdown H1 title: '{Domain} Topic: {Topic Name}'"
+
+  scope:
+    required: true
+    description: "What this topic covers, in one paragraph."
+
+  relevant_objects:
+    required: true
+    description: >
+      List of object types this topic deals with.
+      Must match object types defined in config/routing/registry.yaml.
+
+  evidence_surfaces:
+    required: true
+    description: >
+      List of files and systems the Resolve phase should consult
+      when this topic is active. Includes profile paths, registry
+      entries, and platform names.
+
+  comparison_questions:
+    required: true
+    description: >
+      The key questions the agent should answer when working
+      in this topic. These drive the evidence gathering.
+      Example: "Does the device identity match across inventory and DNS?"
+
+  expansion_triggers:
+    required: true
+    max_items: 6
+    description: >
+      Conditions that should cause the evidence frontier to expand
+      into adjacent domains. Format: "condition -> expand into {domain}"
+      Maximum 6 triggers. If more are needed, the topic index
+      is under-specified and should be split.
+
+  # --- OPTIONAL ---
+
+  adjacent_topics:
+    required: false
+    description: "Topics in other domains that are frequently co-relevant."
+
+validation:
+  - rule: "relevant_objects must match object types in config/routing/registry.yaml"
+  - rule: "expansion_triggers must not exceed 6 items"
+  - rule: "evidence_surfaces file paths must resolve to existing files"

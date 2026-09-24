@@ -1,0 +1,53 @@
+# Schema: Target State
+# Defines the structure of files at references/target-states/*.md
+#
+# Target states define "correct" or "complete" for two categories:
+# 1. Valid artifacts (what a correct work product looks like)
+# 2. Evidence expectations (what completeness looks like for a workflow)
+
+schema: target-state
+version: "1.0"
+
+structure:
+  header:
+    required: true
+    description: "Markdown H1: 'Target State: {name}'"
+
+  category:
+    required: true
+    type: enum
+    values: [valid-artifact, evidence-expectations, state]
+    description: >
+      - valid-artifact: What a correct ticket, checklist, or report looks like
+      - evidence-expectations: What complete evidence looks like for a workflow
+      - state: What a correct lifecycle state looks like (e.g., commissioning, closeout)
+
+  scope:
+    required: true
+    description: "What this target state applies to"
+
+  correct_state:
+    required: true
+    description: >
+      Bullet list defining what "correct" or "complete" looks like.
+      Each bullet is a verifiable condition.
+
+  evidence_surfaces:
+    required: true
+    description: >
+      Where to find the data needed to verify this target state.
+      List of platforms, files, and references.
+
+  mandatory_comparisons:
+    required: true
+    description: >
+      Cross-checks that must be performed. Each comparison defines
+      two or more values that should agree.
+
+  notes:
+    required: false
+    description: "Context on when and how this target state is used"
+
+validation:
+  - rule: "category must be one of: valid-artifact, evidence-expectations, state"
+  - rule: "correct_state must contain at least 3 verifiable conditions"

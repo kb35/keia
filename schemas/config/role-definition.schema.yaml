@@ -1,0 +1,65 @@
+# Schema: Role Definition
+# Defines the structure of files at config/roles/*.yaml
+#
+# Roles determine language, detail level, workflow rules,
+# and write permissions for each user type.
+
+schema: role-definition
+version: "1.0"
+
+structure:
+  role:
+    required: true
+    fields:
+      name:
+        required: true
+        type: string
+        description: "Human-readable role name"
+      slug:
+        required: true
+        type: string
+        description: "Machine identifier (kebab-case)"
+
+  description:
+    required: true
+    type: string
+    description: "What this role does and what they need from the agent"
+
+  narration_depth:
+    required: true
+    type: enum
+    values: [standard, expert]
+    description: >
+      - standard: Clear what/why, concise answer
+      - expert: Adds evidence meaning, branching logic, what was ruled out
+
+  delivery_preferences:
+    required: true
+    description: "How output should be shaped for this role"
+    fields:
+      language:
+        required: true
+        type: string
+        description: "e.g., 'technical', 'timeline and budget', 'executive summary'"
+      default_format:
+        required: true
+        type: string
+        description: "e.g., 'checklists and tables', 'narrative summaries', 'decision frameworks'"
+
+  write_access:
+    required: true
+    type: list
+    description: >
+      Which write-tier tools this role is allowed to use.
+      Empty list = read-only role.
+
+  workflow_overlay:
+    required: false
+    type: string
+    description: >
+      Path to a role-specific .mdc rule file that adds
+      additional workflow guidance for this role.
+
+validation:
+  - rule: "narration_depth must be one of: standard, expert"
+  - rule: "write_access tool names must exist in tool-classification.yaml"

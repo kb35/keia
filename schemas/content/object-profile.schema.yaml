@@ -1,0 +1,97 @@
+# Schema: Object Profile
+# Defines the structure of files at references/object-profiles/*.yaml
+#
+# Object profiles are Level 3a of the knowledge hierarchy.
+# They define what a healthy/correct single object looks like
+# across ALL relevant platforms. This is the most powerful
+# concept in the framework.
+
+schema: object-profile
+version: "1.0"
+
+structure:
+  profile:
+    required: true
+    fields:
+      name:
+        required: true
+        type: string
+        description: "Human-readable name for this object class"
+      object_role:
+        required: true
+        type: string
+        description: "The role or function of this object type"
+      naming_prefixes:
+        required: false
+        type: list
+        description: "Expected hostname or identifier prefixes"
+      version:
+        required: true
+        type: string
+      last_updated:
+        required: true
+        type: date
+      owner:
+        required: true
+        type: string
+
+  sources:
+    required: true
+    description: >
+      Knowledge files this profile draws from. Each entry has:
+      - file: path to the source file
+      - provides: what this source contributes to the profile
+
+  platforms:
+    required: true
+    description: >
+      Per-platform definition of what healthy looks like.
+      Each platform entry has:
+    items:
+      platform_entry:
+        required_fields:
+          - platform_name      # Name of the platform (e.g., "inventory", "dns", "monitoring")
+          - required_fields    # Fields that must exist for this object in this platform
+          - healthy_indicators # Conditions that indicate the object is healthy
+        optional_fields:
+          - naming_convention  # Expected naming pattern in this platform
+          - firmware_expectations  # Expected firmware or software version
+          - mode_variants      # Different modes the object can operate in
+
+  consistency:
+    required: true
+    description: >
+      Cross-platform consistency checks. Each entry defines:
+      - check: what is being compared (e.g., "hostname match")
+      - compare: list of platform.field pairs that should agree
+    items:
+      consistency_check:
+        required_fields:
+          - check    # Name of the consistency check
+          - compare  # List of [platform.field, platform.field] to compare
+
+  discrimination:
+    required: true
+    description: >
+      Troubleshooting classification logic. When something is wrong,
+      this defines how to categorize the failure type and where to
+      look first. Each entry maps a symptom to likely causes and
+      the recommended first check.
+    items:
+      discrimination_entry:
+        required_fields:
+          - symptom        # What the user reports or monitoring shows
+          - likely_causes  # List of possible root causes
+          - first_check    # Which system to check first
+
+  not_applicable:
+    required: true
+    description: >
+      Platforms that explicitly DO NOT apply to this object class.
+      Prevents the agent from checking irrelevant systems.
+
+validation:
+  - rule: "At least one platform must be defined in platforms"
+  - rule: "At least one consistency check must be defined"
+  - rule: "At least one discrimination entry must be defined"
+  - rule: "sources file paths must resolve to existing files"
