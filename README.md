@@ -40,6 +40,8 @@ Everything in this framework is built from nine fundamental concepts:
 
 Everything else (playbooks, skills, roles, standards) is a **composite** built by combining primitives.
 
+> **New to the framework?** Start with the [Operations Framework](site/concepts/operations-framework.md), which defines the operational model that sits upstream of these primitives: what your team manages, how work flows, and who does what.
+
 ## The 5-Phase Workflow (URAD-L)
 
 Every request flows through five phases:

@@ -145,6 +145,6 @@ No infrastructure to deploy. No SaaS subscription. Fork the repo, populate your 
 
 ## Under the Hood
 
-For the technically curious: the framework is built from 9 primitives, 21 schemas, and 5 behavioral rules. It uses four evidence-gathering patterns, a thin routing layer, and a self-improving learning loop.
+For the technically curious: the framework is built from 9 primitives, 21 schemas, and 5 behavioral rules. It uses four evidence-gathering patterns, a thin routing layer, and a self-improving learning loop. The operations framework defines the domain model that everything operates on.
 
-[:octicons-arrow-right-24: The 9 Primitives](concepts/primitives.md) · [:octicons-arrow-right-24: The Workflow](concepts/workflow.md) · [:octicons-arrow-right-24: Schema Reference](schemas/index.md) · [:octicons-arrow-right-24: Full Walkthrough](examples/walkthrough.md)
+[:octicons-arrow-right-24: Operations Framework](concepts/operations-framework.md) · [:octicons-arrow-right-24: The 9 Primitives](concepts/primitives.md) · [:octicons-arrow-right-24: The Workflow](concepts/workflow.md) · [:octicons-arrow-right-24: Schema Reference](schemas/index.md) · [:octicons-arrow-right-24: Full Walkthrough](examples/walkthrough.md)

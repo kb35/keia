@@ -59,6 +59,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Concepts:
+    - Operations Framework: concepts/operations-framework.md
     - The 9 Primitives: concepts/primitives.md
     - The Workflow (URAD-L): concepts/workflow.md
     - Evidence Patterns: concepts/evidence-patterns.md

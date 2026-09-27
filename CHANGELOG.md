@@ -2,6 +2,19 @@
 
 All notable changes to the Keia framework.
 
+## [0.5.0] - 2026-09-27
+
+### Added
+- Operations Framework concept page (site/concepts/operations-framework.md)
+  - Defines the operational model upstream of the framework primitives
+  - Six concepts: technology standards, space types, device profiles, projects, project stages, lifecycle stages
+  - Three work patterns: projects, incidents, service management
+  - Five ITIL-aligned lifecycle stages with defined tasks
+  - Role mapping, capacity planning, logical/physical device identity
+  - Adaptation guide for other teams
+- Operations Framework added to mkdocs nav (first item under Concepts)
+- Operations Framework referenced from site homepage "Under the Hood" section
+
 ## [0.4.0] - 2026-09-24
 
 ### Added
