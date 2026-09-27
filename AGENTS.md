@@ -1,4 +1,4 @@
-# Ops Context Engine
+# Operational Context Engine
 
 # This file provides the framework rules for any AI editor that reads AGENTS.md.
 # It is equivalent to .cursor/rules/*.mdc and CLAUDE.md.
