@@ -241,6 +241,32 @@ The framework includes five safety mechanisms that prevent runaway behavior:
 
 These are defined in `governance.mdc` and enforced at runtime.
 
+## Progressive Adoption
+
+The architecture supports a 5-stage adoption path. Each stage builds on the one before it, and you don't need to move to the next until the current one is working.
+
+### Stage 1: Static Knowledge (Browse)
+
+A website generated from the YAML profiles, deployed to GitLab/GitHub Pages. The team browses device profiles, configuration guides, and troubleshooting references. No AI, no agents, just a website backed by structured data.
+
+### Stage 2: Collaborative Knowledge (Contribute)
+
+An editing interface (web forms or Git-based workflow) so anyone on the team can propose updates. Service managers review and approve changes. The knowledge base grows through contribution, not just one person writing documentation.
+
+### Stage 3: AI-Assisted Knowledge (Interact)
+
+The AI reads the same YAML profiles and answers questions about them. "What firmware should the X52 be on?" "What's the naming convention for this device type?" The AI answers from the structured profiles, not from general training data. Wrong answers get corrected through the learning loop, improving the profiles.
+
+### Stage 4: Automated Verification (Verify)
+
+A scheduled process checks every device against its profile. The system queries live platforms (inventory, DNS, monitoring, fleet management) and compares reality against the profiles. Drift is detected before users report it. A dashboard shows fleet health: which devices are compliant, which have drifted, and what specifically is wrong.
+
+### Stage 5: Autonomous Agents (Act)
+
+The AI doesn't just detect problems, it proposes and executes fixes with appropriate governance. Routine maintenance happens automatically within defined boundaries. Writes still require confirmation (the governance model is enforced at every stage). The agent operates within the same read/write/prohibited tiers, but initiates work proactively instead of waiting for a human to ask.
+
+**The website is always the front door.** At every stage, the website is the primary interface for humans. The AI is behind it, getting more capable at each stage, but the user always has a familiar web browser interface. This is how adoption works: you don't ask people to learn a new AI tool. You give them a website that gets smarter.
+
 ## Design Principles
 
 1. **Routing-first**: Don't hardcode procedures. Classify the request, select the starting point, let the evidence guide the path.
