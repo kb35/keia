@@ -112,7 +112,7 @@ This framework is files. The files work anywhere an AI agent can read them.
 |---------|-----|
 | **Cursor** | Rules as `.cursor/rules/`, knowledge as workspace files |
 | **Claude Code** | Rules as `CLAUDE.md`, same knowledge files |
-| **Red Hat AI Factory** | Rules as agent system prompt, knowledge as Business-as-Code |
+| **Container platform (OpenShift, Kubernetes)** | Rules as agent system prompt, knowledge as structured YAML, tools via registered API connectors |
 | **Any MCP-compatible editor** | Rules as `AGENTS.md`, same knowledge files |
 
 No infrastructure to deploy. No SaaS subscription. Fork the repo, populate your domain, start asking questions.
