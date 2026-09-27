@@ -1,4 +1,4 @@
-# Context Engine
+# Ops Context Engine
 
 A schema-driven cognitive architecture for domain-specific AI assistants.
 
@@ -7,7 +7,7 @@ A schema-driven cognitive architecture for domain-specific AI assistants.
 
 ## What This Is
 
-Context Engine is a portable framework that makes AI assistants intelligent about a specific domain. It provides the reasoning architecture (how the agent thinks), the knowledge structure (what the agent knows), and the governance model (what the agent is allowed to do). It runs inside any AI editor (Cursor, Claude Code) or deployment platform (Red Hat AI Factory, custom infrastructure).
+Ops Context Engine is a portable framework that makes AI assistants intelligent about a specific domain. It provides the reasoning architecture (how the agent thinks), the knowledge structure (what the agent knows), and the governance model (what the agent is allowed to do). It runs inside any AI editor (Cursor, Claude Code) or deployment platform (Red Hat AI Factory, custom infrastructure).
 
 It is not an AI model. It is not an infrastructure platform. It is the layer between the model and the domain that turns a general-purpose AI into a domain expert.
 
@@ -170,7 +170,7 @@ To get a working system, define:
 ## Directory Structure
 
 ```
-context-engine/
+ops-context-engine/
 |
 +-- .cursor/rules/              # THE ENGINE (5 behavioral rules)
 |   +-- workflow.mdc            # URAD-L: the 5-phase loop

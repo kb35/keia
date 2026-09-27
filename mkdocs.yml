@@ -1,9 +1,9 @@
-site_name: Context Engine
+site_name: Ops Context Engine
 site_description: A schema-driven cognitive architecture for domain-specific AI assistants
 site_url: ""
 
-repo_url: https://gitlab.com/your-group/context-engine
-repo_name: context-engine
+repo_url: https://gitlab.com/your-group/ops-context-engine
+repo_name: ops-context-engine
 
 theme:
   name: material
@@ -81,4 +81,4 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/gitlab
-      link: https://gitlab.com/your-group/context-engine
+      link: https://gitlab.com/your-group/ops-context-engine

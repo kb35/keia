@@ -1,6 +1,6 @@
 # Migration Guide
 
-How to bring your existing documentation, standards, and processes into the Context Engine framework.
+How to bring your existing documentation, standards, and processes into the Ops Context Engine framework.
 
 ## Who This Is For
 
