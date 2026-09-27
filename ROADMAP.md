@@ -50,7 +50,7 @@ Planned capabilities:
 
 Planned capabilities:
 
-- Natural language queries: "Is the codec in room 1W198 healthy?"
+- Natural language queries: "Is the codec in room 105 healthy?"
 - AI reads the structured profiles and checks live platforms
 - Guided troubleshooting: AI walks through the discrimination logic from the profile
 - Context-aware responses shaped by the user's role

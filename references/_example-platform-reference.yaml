@@ -20,13 +20,13 @@ sections:
   - name: "Naming Conventions"
     applies_to: [device]
     content:
-      pattern: "{site_code}-{room_code}-{role_prefix}{nn}"
+      pattern: "{site}-{floor}{room}-{role_prefix}{nn}"
       examples:
-        - "dub-1w272-sw01"     # Dublin, room 1W272, switch 01
-        - "muc-4w128-ap03"     # Munich, room 4W128, access point 03
+        - "hq-floor2-sw01"     # HQ building, floor 2, switch 01
+        - "branch1-floor4-ap03"     # Branch office 1, floor 4, access point 03
       rules:
-        - "Site code is the 3-letter IATA airport code"
-        - "Room code uses floor + wing + room number"
+        - "Site code identifies the office location"
+        - "Room code uses floor and room number"
         - "Role prefix from the standard list (sw, ap, pdu, ups, vtc, etc.)"
         - "Sequential number, zero-padded to 2 digits"
 

@@ -109,7 +109,7 @@ firmware:
   current_target: "4.3.2"
   policy: "Poly Lens auto-update policy (site-level). Staged rollout: pilot sites first, then global."
   exceptions:
-    - device: "site1-room01-vtc-codec01"
+    - device: "hq-conf201-codec01"
       reason: "Testing firmware 4.4.0-beta. Do not auto-update."
       until: "2026-11-01"
 

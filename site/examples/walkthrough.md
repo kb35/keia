@@ -4,7 +4,7 @@ Trace a single request through the entire framework, file by file, showing every
 
 ## The Request
 
-> "The network switch in Room 4W128 isn't responding."
+> "The network switch in Room 201 isn't responding."
 
 ## Phase 1: Understand
 
@@ -71,7 +71,7 @@ Monitoring shows the device went unreachable at 14:32. The agent checks: is anyt
 The agent presents the answer:
 
 !!! quote "Agent output"
-    **Switch dub-4w128-sw01 is unreachable since 14:32 today.**
+    **Switch hq-bldg4-sw01 is unreachable since 14:32 today.**
 
     - Inventory record is correct (status: active, all fields populated)
     - DNS resolves correctly (10.0.1.50 matches inventory)
