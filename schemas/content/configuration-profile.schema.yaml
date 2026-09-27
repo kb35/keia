@@ -6,7 +6,7 @@
 # object profiles (which define where a device should exist across
 # platforms and what "registered correctly" looks like).
 #
-# Object profile: "This codec must be in Netbox, Infoblox, Poly Lens"
+# Object profile: "This codec must be in the inventory, DNS, and fleet management"
 # Configuration profile: "This codec should have firmware 4.3.2,
 #   GMNA mode, 1080p, auto-answer off, specific SIP settings"
 #

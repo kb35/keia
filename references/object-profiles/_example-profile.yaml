@@ -65,5 +65,5 @@ discrimination:
     first_check: monitoring
 
 not_applicable:
-  - fleet_management    # Network switches don't use Poly Lens, Appspace, etc.
+  - fleet_management    # Network switches don't use fleet management or content management tools
   - content_management  # No signage or media management

@@ -54,7 +54,7 @@ Without domain knowledge, the AI guesses. It might check one system and miss fiv
 
     **"Check if the codec in Maple Room is healthy across all systems."**
 
-    The AI loads the codec profile, queries Netbox, Infoblox, Poly Lens, Datadog. Cross-checks hostname, IP, firmware. Reports mismatches. Suggests fixes.
+    The AI loads the codec profile, queries the inventory, DNS, fleet management, and monitoring systems. Cross-checks hostname, IP, firmware. Reports mismatches. Suggests fixes.
 
 === "Project Manager"
 
