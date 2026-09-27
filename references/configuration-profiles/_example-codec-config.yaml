@@ -35,7 +35,7 @@ settings:
         expected_value: "4.3.2"
         verification: api_field
         rationale: "Current stable release. Resolves audio dropout issue in 4.3.0."
-        source: "config-guide-poly-studio-x-gmna"
+        source: "config-guide-video-codec-native-mode"
 
   - category: network
     settings:
@@ -92,7 +92,7 @@ settings:
         mode_dependent: true
         mode_values:
           gmna: "Not configured (GMNA handles call setup)"
-          sip_interop: "amg-edge2.mid.vp.vc"
+          sip_interop: "sip-gateway.example.com"
         rationale: "SIP registrar only needed in SIP interop mode"
 
   - category: security
@@ -113,6 +113,6 @@ firmware:
       reason: "Testing firmware 4.4.0-beta. Do not auto-update."
       until: "2026-11-01"
 
-config_guide_reference: "config-guide-poly-studio-x-gmna"
+config_guide_reference: "config-guide-video-codec-native-mode"
 
 relationship_to_object_profile: "references/object-profiles/_example-profile.yaml"
