@@ -1,4 +1,4 @@
-# Operational Context Engine - Claude Code Configuration
+# Ops Context Engine - Claude Code Configuration
 
 This file provides the same behavioral rules as `.cursor/rules/*.mdc` for Claude Code compatibility.
 
