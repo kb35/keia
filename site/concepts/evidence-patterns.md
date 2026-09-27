@@ -44,7 +44,7 @@ graph LR
 | 6. If something is wrong, discriminate | What type of failure is this? Where to look next? | Profile `discrimination` section |
 
 !!! example "Example"
-    **Request:** "The network switch in Room 201 isn't responding"
+    **Request:** "The network switch in Maple Room isn't responding"
 
     - Profile says: hostname, IP, serial must exist in inventory. Forward and reverse DNS. Monitoring reporting.
     - Inventory says: switch exists, status: active, IP: 10.0.1.50

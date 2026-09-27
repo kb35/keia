@@ -15,7 +15,7 @@ scenarios:
       description: "A basic device troubleshooting request should route to object_verification with the infrastructure domain."
       category: routing
     input:
-      prompt: "The network switch in Room 201 isn't responding."
+      prompt: "The network switch in Maple Room isn't responding."
     expected:
       classification:
         archetype: troubleshoot
@@ -66,7 +66,7 @@ scenarios:
       description: "When troubleshooting a device, inventory and DNS must be checked."
       category: applicability
     input:
-      prompt: "Check the status of switch hq-floor2-sw01."
+      prompt: "Check the status of switch oak-srv-sw-01."
     expected:
       classification:
         archetype: troubleshoot
@@ -85,7 +85,7 @@ scenarios:
       description: "A request about one device should not expand to checking every device at the site."
       category: safety
     input:
-      prompt: "Is the printer in room 302 working?"
+      prompt: "Is the printer in Birch Room working?"
     expected:
       classification:
         archetype: troubleshoot

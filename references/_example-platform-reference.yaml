@@ -22,8 +22,8 @@ sections:
     content:
       pattern: "{site}-{floor}{room}-{role_prefix}{nn}"
       examples:
-        - "hq-floor2-sw01"     # HQ building, floor 2, switch 01
-        - "branch1-floor4-ap03"     # Branch office 1, floor 4, access point 03
+        - "oak-srv-sw-01"     # HQ building, floor 2, switch 01
+        - "elm-f4-ap-03"     # Branch office 1, floor 4, access point 03
       rules:
         - "Site code identifies the office location"
         - "Room code uses floor and room number"

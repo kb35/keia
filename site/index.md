@@ -8,7 +8,7 @@ AI assistants are smart. But they don't know what a healthy device looks like in
 
 ## The Problem
 
-You ask your AI: *"Is the codec in Room 201 healthy?"*
+You ask your AI: *"Is the codec in Maple Room healthy?"*
 
 Without domain knowledge, the AI guesses. It might check one system and miss five others. It doesn't know that "healthy" means the device exists in your inventory, has DNS records, is reporting to monitoring, is registered in the fleet tool, and has the right firmware.
 
@@ -52,13 +52,13 @@ Without domain knowledge, the AI guesses. It might check one system and miss fiv
 
 === "Engineer"
 
-    **"Check if the codec in Room 201 is healthy across all systems."**
+    **"Check if the codec in Maple Room is healthy across all systems."**
 
     The AI loads the codec profile, queries Netbox, Infoblox, Poly Lens, Datadog. Cross-checks hostname, IP, firmware. Reports mismatches. Suggests fixes.
 
 === "Project Manager"
 
-    **"What's the status of my Portland project?"**
+    **"What's the status of my Westfield project?"**
 
     The AI loads the project profile, checks the tracker for stage and dates, scans email for recent vendor communications, checks calendar for upcoming milestones. Flags stale notes and past-due dates.
 
