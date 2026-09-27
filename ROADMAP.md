@@ -1,6 +1,6 @@
 # Roadmap
 
-The Ops Context Engine is designed to evolve from files in a repo to a standalone platform. This roadmap describes the planned progression. Contributions at any stage are welcome.
+The Keia is designed to evolve from files in a repo to a standalone platform. This roadmap describes the planned progression. Contributions at any stage are welcome.
 
 ## Current State
 

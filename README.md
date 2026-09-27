@@ -1,10 +1,10 @@
-# Ops Context Engine
+# Keia
 
 A schema-driven platform for building domain-specific operational knowledge systems that progress from a browsable website to autonomous AI agents.
 
 ## What This Is
 
-The Ops Context Engine is a framework for structuring operational knowledge so it can be browsed by humans, queried by AI, and used for automated verification and autonomous operations.
+The Keia is a framework for structuring operational knowledge so it can be browsed by humans, queried by AI, and used for automated verification and autonomous operations.
 
 Today it ships as YAML files and schemas in a Git repo. The roadmap is a standalone web application deployed on OpenShift/Kubernetes with role-based access, live platform integration, and AI-assisted operations. See [ROADMAP.md](ROADMAP.md) for the full progression.
 
@@ -166,7 +166,7 @@ To get a working system, define:
 ## Directory Structure
 
 ```
-ops-context-engine/
+keia/
 |
 +-- .cursor/rules/              # THE ENGINE (5 behavioral rules)
 |   +-- workflow.mdc            # URAD-L: the 5-phase loop

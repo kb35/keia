@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Ops Context Engine framework.
+All notable changes to the Keia framework.
 
 ## [0.4.0] - 2026-09-24
 
